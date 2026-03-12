@@ -1,13 +1,14 @@
 import asyncio
 import os
 
+asyncio.set_event_loop(asyncio.new_event_loop())
+
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import uvicorn
 
-# ENV VARIABLES
 API_ID = int(os.environ.get("API_ID"))
 API_HASH = os.environ.get("API_HASH")
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
@@ -25,7 +26,7 @@ bot = Client(
     bot_token=BOT_TOKEN
 )
 
-# START COMMAND
+
 @bot.on_message(filters.command("start"))
 async def start(client, message):
     await message.reply_text(
@@ -33,7 +34,6 @@ async def start(client, message):
     )
 
 
-# FILE HANDLER
 @bot.on_message(filters.video | filters.document)
 async def get_file(client, message):
 
@@ -51,13 +51,11 @@ async def get_file(client, message):
     )
 
 
-# WEBSITE ROOT
 @app.get("/")
 async def home():
     return {"status": "Bot running"}
 
 
-# ADS PAGE
 @app.get("/ads/{file_id}")
 async def ads_page(file_id: str, user: int):
 
@@ -84,7 +82,6 @@ async def ads_page(file_id: str, user: int):
     return HTMLResponse(html)
 
 
-# STREAM PAGE
 @app.get("/watch/{file_id}")
 async def watch(file_id: str):
 
@@ -93,8 +90,6 @@ async def watch(file_id: str):
     <body style="text-align:center">
 
     <h2>Stream Ready</h2>
-
-    <p>Your video unlocked successfully</p>
 
     </body>
     </html>
