@@ -20,7 +20,7 @@ async def get_file(client, message):
 
     file_id = message.video.file_id if message.video else message.document.file_id
 
-    link = f"https://yourapp.onrender.com/watch/{file_id}"
+    link = f"https://filestreambot-skvy.onrender.com/watch/{file_id}"
 
     await message.reply_text(
         f"🎬 Stream Link\n{link}"
