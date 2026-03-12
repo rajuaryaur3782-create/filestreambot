@@ -1,6 +1,7 @@
 import asyncio
 import os
 
+# Fix for Pyrogram event loop error
 asyncio.set_event_loop(asyncio.new_event_loop())
 
 from fastapi import FastAPI
@@ -26,18 +27,19 @@ bot = Client(
     bot_token=BOT_TOKEN
 )
 
-
 @bot.on_message(filters.command("start"))
 async def start(client, message):
     await message.reply_text(
         "🚀 File Stream Bot Working\n\nSend a file to generate stream link."
     )
 
-
 @bot.on_message(filters.video | filters.document)
 async def get_file(client, message):
 
-    file_id = message.video.file_id if message.video else message.document.file_id
+    if message.video:
+        file_id = message.video.file_id
+    else:
+        file_id = message.document.file_id
 
     link = f"{BASE_URL}/ads/{file_id}?user={message.from_user.id}"
 
@@ -50,11 +52,9 @@ async def get_file(client, message):
         reply_markup=button
     )
 
-
 @app.get("/")
 async def home():
     return {"status": "Bot running"}
-
 
 @app.get("/ads/{file_id}")
 async def ads_page(file_id: str, user: int):
@@ -81,22 +81,18 @@ async def ads_page(file_id: str, user: int):
 
     return HTMLResponse(html)
 
-
 @app.get("/watch/{file_id}")
 async def watch(file_id: str):
 
     html = """
     <html>
     <body style="text-align:center">
-
     <h2>Stream Ready</h2>
-
     </body>
     </html>
     """
 
     return HTMLResponse(html)
-
 
 async def main():
 
@@ -109,7 +105,6 @@ async def main():
     asyncio.create_task(server.serve())
 
     await bot.idle()
-
 
 if __name__ == "__main__":
     asyncio.run(main())
