@@ -1,8 +1,8 @@
 import asyncio
+import os
+
 asyncio.set_event_loop(asyncio.new_event_loop())
 
-import asyncio
-import os
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pyrogram import Client, filters
