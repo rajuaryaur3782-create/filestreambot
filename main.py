@@ -9,11 +9,13 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import uvicorn
 
+
 API_ID = int(os.environ.get("API_ID", 0))
 API_HASH = os.environ.get("API_HASH")
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
 BASE_URL = "https://filestreambot-skvy.onrender.com"
+
 
 app = FastAPI()
 
@@ -26,11 +28,13 @@ bot = Client(
 
 ad_counter = {}
 
+
 @bot.on_message(filters.command("start"))
 async def start(client, message):
     await message.reply_text(
         "🚀 File Stream Bot Working\n\nSend a file to generate stream link."
     )
+
 
 @bot.on_message(filters.video | filters.document)
 async def get_file(client, message):
@@ -57,8 +61,6 @@ async def home():
 @app.get("/ads/{file_id}")
 async def ads_page(file_id: str, user: int):
 
-    remaining = 2
-
     html = f"""
     <html>
     <body style="text-align:center">
@@ -71,7 +73,7 @@ async def ads_page(file_id: str, user: int):
 
     <button onclick="show_10555415()">Watch Ad</button>
 
-    <h3>{remaining} ads required</h3>
+    <br><br>
 
     <a href="/watch/{file_id}?user={user}">Continue</a>
 
@@ -85,7 +87,7 @@ async def ads_page(file_id: str, user: int):
 @app.get("/watch/{file_id}")
 async def watch(file_id: str):
 
-    html = f"""
+    html = """
     <html>
     <body style="text-align:center">
 
@@ -100,12 +102,15 @@ async def watch(file_id: str):
     return HTMLResponse(html)
 
 
+PORT = int(os.environ.get("PORT", 10000))
+
+
 async def main():
 
     await bot.start()
     print("BOT STARTED")
 
-    config = uvicorn.Config(app, host="0.0.0.0", port=10000)
+    config = uvicorn.Config(app, host="0.0.0.0", port=PORT)
     server = uvicorn.Server(config)
 
     await server.serve()
