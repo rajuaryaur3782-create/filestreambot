@@ -9,7 +9,6 @@ BOT_USERNAME = "filesstreams_bot"
 def home():
     return {"status": "bot running"}
 
-# ads unlock page
 @app.get("/unlock/{file_id}", response_class=HTMLResponse)
 def unlock(file_id: str):
 
@@ -17,7 +16,7 @@ def unlock(file_id: str):
     <html>
     <head>
 
-    <title>Unlock Link</title>
+    <title>Unlock Video</title>
 
     <script src='//libtl.com/sdk.js'
     data-zone='10555415'
@@ -33,7 +32,7 @@ def unlock(file_id: str):
 
             ads++;
 
-            if(ads >= 2){{
+            if(ads >= 2) {{
                 window.location.href="https://t.me/{BOT_USERNAME}?start={file_id}"
             }}
 
@@ -46,9 +45,9 @@ def unlock(file_id: str):
 
     <body style="text-align:center;font-family:sans-serif">
 
-    <h2>Watch 2 Ads To Unlock Link</h2>
+    <h2>Watch 2 Ads To Unlock Video</h2>
 
-    <button onclick="watchAd()" style="padding:15px;font-size:18px">
+    <button onclick="watchAd()" style="padding:15px;font-size:20px">
     Watch Ad
     </button>
 
@@ -59,20 +58,23 @@ def unlock(file_id: str):
     return html
 
 
-# video page
 @app.get("/watch/{file_id}", response_class=HTMLResponse)
 def watch(file_id: str):
 
     html = f"""
     <html>
 
-    <body style="text-align:center">
+    <body style="text-align:center;font-family:sans-serif">
 
     <h2>Video Player</h2>
 
-    <p>Your file id:</p>
+    <p>File ID:</p>
 
     <p>{file_id}</p>
+
+    <br>
+
+    <a href="https://t.me/{BOT_USERNAME}">Back to Telegram</a>
 
     </body>
 
